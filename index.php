@@ -1,22 +1,57 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['_method']) && $_POST['_method'] === 'PUT') {
+
         // Handle user update request
-        // Example: updateUser($_POST['id'], $_POST['username'], $_POST['email'], $_POST['password']);
+        updateUser(
+            $_POST['nome'],
+            $_POST['codigo_unidade'],
+            $_POST['logradouro'],
+            $_POST['bairro'],
+            $_POST['cep'],
+            $_POST['funcionario']
+        );
+        $response = array('message' => 'Data received successfully');
+        header('Content-Type: application/json');
+        echo json_encode($response);
     } elseif (isset($_POST['_method']) && $_POST['_method'] === 'DELETE') {
         // Handle user deletion request
-        // Example: deleteUser($_POST['id']);
+        deleteUser($_POST['id']);
+        $response = array('message' => 'Data received successfully');
+        header('Content-Type: application/json');
+        echo json_encode($response);
     } else {
         // Handle user creation request
-        // Example: createUser($_POST['username'], $_POST['email'], $_POST['password']);
+        createUser(
+            $_POST['nome'],
+            $_POST['codigo_unidade'],
+            $_POST['logradouro'],
+            $_POST['bairro'],
+            $_POST['cep'],
+            $_POST['funcionario']
+        );
+        $response = array('message' => 'Data received successfully');
+        header('Content-Type: application/json');
+        echo json_encode($response);
     }
+} elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $response = array('message' => 'Data received successfully');
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
 
 // Database connection and user functions
 // Implement the createUser, updateUser, and deleteUser functions here
 
 // Sample function for creating a user (replace with actual implementation)
-function createUser($username, $email, $password) {
+function createUser(
+    $nome,
+    $codigo_unidade,
+    $logradouro,
+    $bairro,
+    $cep,
+    $funcionario
+) {
     // Connect to the database (you'll need to provide the DB connection details)
     $conn = new mysqli("hostname", "username", "password", "database_name");
     if ($conn->connect_error) {
@@ -24,13 +59,19 @@ function createUser($username, $email, $password) {
     }
 
     // Sanitize inputs and insert data into the database
-    $username = $conn->real_escape_string($username);
-    $email = $conn->real_escape_string($email);
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $nome = $conn->real_escape_string($nome);
+    $codigo_unidade = $conn->real_escape_string($codigo_unidade);
+    $logradouro = $conn->real_escape_string($logradouro);
+    $bairro = $conn->real_escape_string($bairro);
+    $cep = $conn->real_escape_string($cep);
+    $funcionario = $conn->real_escape_string($funcionario);
+    // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashedPassword')";
+    $sql = "INSERT INTO unidade (nome, codigo_unidade, logradouro, bairro, cep, funcionario) VALUES ('$nome', '$codigo_unidade', '$logradouro', '$bairro', '$cep', '$funcionario')";
     if ($conn->query($sql) === TRUE) {
-        echo "User created successfully!";
+        $response = array('message' => "Unidade criada com sucess!");
+        header('Content-Type: application/json');
+        echo json_encode($response);
     } else {
         echo "Error: " . $conn->error;
     }
