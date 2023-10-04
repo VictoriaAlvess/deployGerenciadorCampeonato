@@ -21,6 +21,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Content-Type: application/json');
         echo json_encode($response);
     } else {
+        $response = array(
+            'nome' => $_POST['nome'],
+            'codigo_unidade' => $_POST['codigo_unidade'],
+            'logradouro' => $_POST['logradouro'],
+            'bairro' => $_POST['bairro'],
+            'cep' => $_POST['cep'],
+            'funcionario' => $_POST['funcionario']
+        );
+
+        header('Content-Type: application/json');
+        echo json_encode($response);
+
         // Handle user creation request
         createUser(
             $_POST['nome'],
@@ -35,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($response);
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $response = array('message' => 'Data received successfully');
+    $response = array('message' => 'hello world');
     header('Content-Type: application/json');
     echo json_encode($response);
 }
