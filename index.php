@@ -50,6 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = array('message' => 'hello world');
     header('Content-Type: application/json');
     echo json_encode($response);
+} elseif ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header("Access-Control-Allow-Origin: *");
+    header('Access-Control-Max-Age: 1000');
+    header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+    return json_encode(array());
 }
 
 // Database connection and user functions
